@@ -1,10 +1,12 @@
 import React from 'react';
-import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
+import { FaSpinner } from 'react-icons/fa';
+import { BiSearch } from 'react-icons/bi';
 import { useCallback, useEffect, useState } from 'react';
 
-import { createTodo } from '../api/todo';
-import useFocus from '../hooks/useFocus';
-import { SetTodos } from '../types/todo';
+import { createTodo } from '../../api/todo';
+import useFocus from '../../hooks/useFocus';
+import { SetTodos } from '../../types/todo';
+import SearchDropdown from '../Search/SearchDropdown';
 
 interface InputTodoProps {
   setTodos: SetTodos;
@@ -49,8 +51,9 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
 
   return (
     <form className="form-container" onSubmit={handleSubmit}>
+      <BiSearch className="search" />
       <input
-        className="input-text"
+        className="input-text ellipsis"
         placeholder="Add new todo..."
         ref={ref}
         value={inputText}
@@ -58,12 +61,11 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         disabled={isLoading}
       />
       {!isLoading ? (
-        <button className="input-submit" type="submit">
-          <FaPlusCircle className="btn-plus" />
-        </button>
+        <button className="input-submit" type="submit"></button>
       ) : (
         <FaSpinner className="spinner" />
       )}
+      <SearchDropdown />
     </form>
   );
 };

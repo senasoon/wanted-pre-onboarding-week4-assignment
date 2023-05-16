@@ -2,8 +2,8 @@ import React from 'react';
 import { FaSpinner, FaTrash } from 'react-icons/fa';
 import { useCallback, useState } from 'react';
 
-import { deleteTodo } from '../api/todo';
-import { Todo, SetTodos } from '../types/todo';
+import { deleteTodo } from '../../api/todo';
+import { Todo, SetTodos } from '../../types/todo';
 
 interface TodoItemProps {
   id: string;
@@ -30,7 +30,7 @@ const TodoItem = ({ id, title, setTodos }: TodoItemProps) => {
 
   return (
     <li className="item">
-      <span>{title}</span>
+      <span className="ellipsis">{title}</span>
       <div className="item-option">
         {!isLoading ? (
           <button onClick={() => handleRemoveTodo()}>
