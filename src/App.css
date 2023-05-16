@@ -232,3 +232,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
+
+.highlight-keyword {
+  color: #2bc9ba;
+}

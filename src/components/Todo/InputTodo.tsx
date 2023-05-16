@@ -91,7 +91,9 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
       ) : (
         <FaSpinner className="spinner" />
       )}
-      {isInputFocused && searchList.length > 0 && <SearchDropdown recommends={searchList} />}
+      {isInputFocused && searchList.length > 0 && (
+        <SearchDropdown recommends={searchList} inputText={inputText} />
+      )}
     </form>
   );
 };
