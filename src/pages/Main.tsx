@@ -1,10 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-import Header from '../components/Header';
-import InputTodo from '../components/InputTodo';
-import TodoList from '../components/TodoList';
 import { getTodoList } from '../api/todo';
+import Header from '../components/Header/Header';
+import InputTodo from '../components/Todo/InputTodo';
+import TodoList from '../components/Todo/TodoList';
 import { Todo } from '../types/todo';
 
 const Main = () => {

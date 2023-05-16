@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   line-height: 1.4;
   color: #444;
   background: #fff;
@@ -30,12 +30,23 @@ body {
 }
 
 .form-container {
-  width: 100%;
-  margin-bottom: 20px;
+  width: 364px;
+  height: 44px;
+  margin: 0 auto 20px auto;
+  padding-right: 13px;
   display: flex;
-  border-radius: calc(0.5 * 100px);
-  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.38);
-  justify-content: space-evenly;
+  border-radius: 6px;
+  border: 1px solid #dedede;
+  position: relative;
+}
+
+.form-container:focus-within {
+  border: 1px solid #9f9f9f;
+}
+
+.form-container:hover {
+  box-shadow: 0 0 0 2px #dedede inset;
+  border: 1px solid #dedede;
 }
 
 .input-text {
@@ -46,6 +57,10 @@ body {
   padding-left: 10px;
   border-radius: calc(0.5 * 100px);
   background-color: transparent;
+}
+
+.input-text::placeholder {
+  color: #9f9f9f;
 }
 
 .input-submit {
@@ -148,4 +163,72 @@ body {
   width: 100%;
   padding: 10px;
   border: 1px solid #dfdfdf;
+}
+
+.search {
+  width: 20px;
+  height: 20px;
+  margin: auto 0;
+  color: #7d7d7d;
+  margin-left: 13px;
+}
+
+.dropdown {
+  width: 364px;
+  height: 164px;
+  border: 1px solid #dedede;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px #dedede;
+  padding-right: 4px;
+}
+
+.dropdown-inner {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.dropdown-inner::-webkit-scrollbar {
+  background-color: #fff;
+  width: 4px;
+}
+
+.dropdown-inner::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.48);
+  border-radius: 2px;
+}
+
+.search-list {
+  margin: 9px 5px;
+  list-style: none;
+}
+
+.search-item {
+  width: 100%;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 3px;
+  line-height: 1;
+  background-color: transparent;
+  border: 0;
+  text-align: start;
+}
+
+.search-item:hover {
+  background-color: #f2f2f2;
+}
+
+.search-item:focus {
+  background-color: #d5f4f1;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
