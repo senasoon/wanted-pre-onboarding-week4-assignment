@@ -1,17 +1,18 @@
 import React from 'react';
 import SearchItem from './SearchItem';
 
-const SearchDropdown = () => {
+interface SearchDropdownProps {
+  recommends: string[];
+}
+
+const SearchDropdown = ({ recommends }: SearchDropdownProps) => {
   return (
     <div className="dropdown">
       <div className="dropdown-inner">
         <ul className="search-list">
-          <SearchItem />
-          <SearchItem />
-          <SearchItem />
-          <SearchItem />
-          <SearchItem />
-          <SearchItem />
+          {recommends.map(recommend => (
+            <SearchItem key={self.crypto.randomUUID()} title={recommend} />
+          ))}
         </ul>
       </div>
     </div>

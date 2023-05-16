@@ -1,10 +1,14 @@
 import React from 'react';
 
-const SearchItem = () => {
+interface SearchItem {
+  title: string;
+}
+
+const SearchItem = ({ title }: SearchItem) => {
   return (
     <li>
       <button type="button" className="search-item ellipsis">
-        hello
+        {title}
       </button>
     </li>
   );

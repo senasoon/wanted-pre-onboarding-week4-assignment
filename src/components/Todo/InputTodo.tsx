@@ -7,6 +7,8 @@ import { createTodo } from '../../api/todo';
 import useFocus from '../../hooks/useFocus';
 import { SetTodos } from '../../types/todo';
 import SearchDropdown from '../Search/SearchDropdown';
+import { getSearchTodo } from '../../api/search';
+import useDebounce from '../../hooks/useDebounce';
 
 interface InputTodoProps {
   setTodos: SetTodos;
@@ -14,12 +16,34 @@ interface InputTodoProps {
 
 const InputTodo = ({ setTodos }: InputTodoProps) => {
   const [inputText, setInputText] = useState<string>('');
+  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchList, setSearchList] = useState<string[]>([]);
   const { ref, setFocus } = useFocus<HTMLInputElement>();
 
-  useEffect(() => {
+  const setFocusHandler = useCallback(() => {
     setFocus();
-  }, [setFocus]);
+  }, []);
+
+  useEffect(() => {
+    setFocusHandler();
+  }, [setFocusHandler]);
+
+  const debouncedInputText = useDebounce(inputText, 500);
+
+  useEffect(() => {
+    const getSearchTodoList = async () => {
+      if (!debouncedInputText) return;
+      try {
+        const { data } = await getSearchTodo(debouncedInputText, 1);
+        setSearchList(data.result);
+      } catch (error) {
+        console.error(error);
+        alert('Something went wrong.');
+      }
+    };
+    getSearchTodoList();
+  }, [debouncedInputText]);
 
   const handleSubmit = useCallback(
     async e => {
@@ -59,13 +83,15 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         value={inputText}
         onChange={e => setInputText(e.target.value)}
         disabled={isLoading}
+        onFocus={() => setIsInputFocused(true)}
+        onBlur={() => setIsInputFocused(false)}
       />
       {!isLoading ? (
         <button className="input-submit" type="submit"></button>
       ) : (
         <FaSpinner className="spinner" />
       )}
-      <SearchDropdown />
+      {isInputFocused && searchList.length > 0 && <SearchDropdown recommends={searchList} />}
     </form>
   );
 };
