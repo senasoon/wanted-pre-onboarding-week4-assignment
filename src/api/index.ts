@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const baseURL = process.env.REACT_APP_API_URL;
 const token = process.env.REACT_APP_TOKEN;
@@ -13,9 +13,9 @@ const baseInstance = axios.create({
 baseInstance.interceptors.response.use(({ data }) => data);
 
 const apiRequest = {
-  get: (url, request) => baseInstance.get(url, request),
-  delete: (url, request) => baseInstance.delete(url, request),
-  post: (url, data, config) => baseInstance.post(url, data, config),
+  get: url => baseInstance.get(url),
+  delete: url => baseInstance.delete(url),
+  post: (url, data) => baseInstance.post(url, data),
 };
 
 export default apiRequest;

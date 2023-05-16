@@ -1,6 +1,13 @@
-import TodoItem from "./TodoItem";
+import React from 'react';
+import TodoItem from './TodoItem';
+import { Todo, SetTodos } from '../types/todo';
 
-const TodoList = ({ todos, setTodos }) => {
+interface TodoListProps {
+  todos: Todo[];
+  setTodos: SetTodos;
+}
+
+const TodoList = ({ todos, setTodos }: TodoListProps) => {
   return todos.length ? (
     <ul>
       {todos.map(({ id, title }) => (
