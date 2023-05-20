@@ -7,7 +7,6 @@ import { createTodo } from '../../api/todo';
 import useFocus from '../../hooks/useFocus';
 import { SetTodos } from '../../types/todo';
 import SearchDropdown from '../Search/SearchDropdown';
-import { getSearchTodo } from '../../api/search';
 import useDebounce from '../../hooks/useDebounce';
 
 interface InputTodoProps {
@@ -18,7 +17,6 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
   const [inputText, setInputText] = useState<string>('');
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [searchList, setSearchList] = useState<string[]>([]);
   const { ref, setFocus } = useFocus<HTMLInputElement>();
 
   const setFocusHandler = useCallback(() => {
@@ -30,20 +28,6 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
   }, [setFocusHandler]);
 
   const debouncedInputText = useDebounce(inputText, 500);
-
-  useEffect(() => {
-    const getSearchTodoList = async () => {
-      if (!debouncedInputText) return;
-      try {
-        const { data } = await getSearchTodo(debouncedInputText, 1);
-        setSearchList(data.result);
-      } catch (error) {
-        console.error(error);
-        alert('Something went wrong.');
-      }
-    };
-    getSearchTodoList();
-  }, [debouncedInputText]);
 
   const handleSubmit = useCallback(
     async e => {
@@ -91,9 +75,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
       ) : (
         <FaSpinner className="spinner" />
       )}
-      {isInputFocused && searchList.length > 0 && (
-        <SearchDropdown recommends={searchList} inputText={inputText} />
-      )}
+      {isInputFocused && <SearchDropdown inputText={debouncedInputText} />}
     </form>
   );
 };

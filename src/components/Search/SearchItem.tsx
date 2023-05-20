@@ -7,7 +7,6 @@ interface SearchItem {
 
 const SearchItem = ({ title, inputText }: SearchItem) => {
   const textArray = title.split(new RegExp(`(${inputText})`, 'gi'));
-  console.log(textArray);
   return (
     <li>
       <button type="button" className="search-item ellipsis">

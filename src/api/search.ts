@@ -1,12 +1,12 @@
 import apiRequest from './index';
+import { RECOMMEND_LIMIT_PER_PAGE } from '../constants/search';
 
 const RESOURCE = '/search';
-const SEARCH_LIMIT = 10;
 
 export const getSearchTodo = async (keyword: string, page: number) => {
   try {
     const response = await apiRequest.get(
-      `${RESOURCE}?q=${keyword}&page=${page}&limit=${SEARCH_LIMIT}`
+      `${RESOURCE}?q=${keyword}&page=${page}&limit=${RECOMMEND_LIMIT_PER_PAGE}`
     );
 
     return response;

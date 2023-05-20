@@ -236,3 +236,8 @@ body {
 .highlight-keyword {
   color: #2bc9ba;
 }
+
+.observer {
+  display: flex;
+  justify-content: center;
+}
