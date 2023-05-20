@@ -232,3 +232,12 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
+
+.highlight-keyword {
+  color: #2bc9ba;
+}
+
+.observer {
+  display: flex;
+  justify-content: center;
+}
