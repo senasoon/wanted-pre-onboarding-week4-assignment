@@ -1,4 +1,6 @@
 import React from 'react';
+import { useRecommendActions } from '../../contexts/RecommendContext';
+import { useTodoActions } from '../../contexts/TodoContext';
 
 interface SearchItem {
   title: string;
@@ -7,9 +9,18 @@ interface SearchItem {
 
 const SearchItem = ({ title, inputText }: SearchItem) => {
   const textArray = title.split(new RegExp(`(${inputText})`, 'gi'));
+
+  const { handleSubmit } = useTodoActions();
+  const { setInputText } = useRecommendActions();
+
+  const handleSubmitRecommend = () => {
+    handleSubmit(title);
+    setInputText('');
+  };
+
   return (
     <li>
-      <button type="button" className="search-item ellipsis">
+      <button onClick={handleSubmitRecommend} type="button" className="search-item ellipsis">
         {textArray.map((text, index) => (
           <React.Fragment key={self.crypto.randomUUID()}>
             {index % 2 !== 0 && <span className="highlight-keyword">{text}</span>}

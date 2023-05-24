@@ -1,30 +1,29 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { getTodoList } from '../api/todo';
 import Header from '../components/Header/Header';
 import InputTodo from '../components/Todo/InputTodo';
 import TodoList from '../components/Todo/TodoList';
-import { Todo } from '../types/todo';
+import RecommendProvider from '../contexts/RecommendContext';
+import { useTodoActions } from '../contexts/TodoContext';
 
 const Main = () => {
-  const [todoListData, setTodoListData] = useState<Todo[]>([]);
+  const { handleGetTodoList } = useTodoActions();
 
   useEffect(() => {
-    (async () => {
-      const { data } = await getTodoList();
-      setTodoListData(data || []);
-    })();
+    handleGetTodoList();
   }, []);
 
   return (
-    <div className="container">
-      <div className="inner">
-        <Header />
-        <InputTodo setTodos={setTodoListData} />
-        <TodoList todos={todoListData} setTodos={setTodoListData} />
+    <RecommendProvider>
+      <div className="container">
+        <div className="inner">
+          <Header />
+          <InputTodo />
+          <TodoList />
+        </div>
       </div>
-    </div>
+    </RecommendProvider>
   );
 };
 

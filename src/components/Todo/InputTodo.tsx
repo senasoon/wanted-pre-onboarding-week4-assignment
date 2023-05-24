@@ -3,21 +3,16 @@ import { FaSpinner } from 'react-icons/fa';
 import { BiSearch } from 'react-icons/bi';
 import { useCallback, useEffect, useState } from 'react';
 
-import { createTodo } from '../../api/todo';
 import useFocus from '../../hooks/useFocus';
-import { SetTodos } from '../../types/todo';
 import SearchDropdown from '../Search/SearchDropdown';
-import useDebounce from '../../hooks/useDebounce';
+import { useRecommendActions, useRecommendValue } from '../../contexts/RecommendContext';
+import { useTodoActions, useTodoValue } from '../../contexts/TodoContext';
 
-interface InputTodoProps {
-  setTodos: SetTodos;
-}
-
-const InputTodo = ({ setTodos }: InputTodoProps) => {
-  const [inputText, setInputText] = useState<string>('');
-  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+const InputTodo = () => {
   const { ref, setFocus } = useFocus<HTMLInputElement>();
+
+  const { setInputText } = useRecommendActions();
+  const { inputText } = useRecommendValue();
 
   const setFocusHandler = useCallback(() => {
     setFocus();
@@ -27,38 +22,17 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
     setFocusHandler();
   }, [setFocusHandler]);
 
-  const debouncedInputText = useDebounce(inputText, 500);
+  const { handleSubmit } = useTodoActions();
+  const { isSubmitLoading } = useTodoValue();
 
-  const handleSubmit = useCallback(
-    async e => {
-      try {
-        e.preventDefault();
-        setIsLoading(true);
-
-        const trimmed = inputText.trim();
-        if (!trimmed) {
-          return alert('Please write something');
-        }
-
-        const newItem = { title: trimmed };
-        const { data } = await createTodo(newItem);
-
-        if (data) {
-          return setTodos(prev => [...prev, data]);
-        }
-      } catch (error) {
-        console.error(error);
-        alert('Something went wrong.');
-      } finally {
-        setInputText('');
-        setIsLoading(false);
-      }
-    },
-    [inputText, setTodos]
-  );
+  const handleSubmitTodo = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(inputText);
+    setInputText('');
+  };
 
   return (
-    <form className="form-container" onSubmit={handleSubmit}>
+    <form className="form-container" onSubmit={handleSubmitTodo}>
       <BiSearch className="search" />
       <input
         className="input-text ellipsis"
@@ -66,16 +40,14 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         ref={ref}
         value={inputText}
         onChange={e => setInputText(e.target.value)}
-        disabled={isLoading}
-        onFocus={() => setIsInputFocused(true)}
-        onBlur={() => setIsInputFocused(false)}
+        disabled={isSubmitLoading}
       />
-      {!isLoading ? (
+      {!isSubmitLoading ? (
         <button className="input-submit" type="submit"></button>
       ) : (
         <FaSpinner className="spinner" />
       )}
-      {isInputFocused && <SearchDropdown inputText={debouncedInputText} />}
+      <SearchDropdown />
     </form>
   );
 };
