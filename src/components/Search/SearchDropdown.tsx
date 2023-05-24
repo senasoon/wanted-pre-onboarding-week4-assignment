@@ -3,38 +3,14 @@ import { FaSpinner } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
 
 import SearchItem from './SearchItem';
-import { getSearchTodo } from '../../api/search';
-import { RECOMMEND_LIMIT_PER_PAGE } from '../../constants/search';
+import { useRecommendActions, useRecommendValue } from '../../contexts/RecommendContext';
 
-interface SearchDropdownProps {
-  inputText: string;
-}
-
-const SearchDropdown = ({ inputText }: SearchDropdownProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-  const [searchList, setSearchList] = useState<string[]>([]);
-
+const SearchDropdown = () => {
   const target = useRef<HTMLLIElement>(null);
   const root = useRef<HTMLDivElement>(null);
-  const page = useRef<number>(1);
 
-  const getSearchTodoList = async () => {
-    if (!inputText || !hasNextPage) return;
-    try {
-      setIsLoading(true);
-
-      const { data } = await getSearchTodo(inputText, page.current);
-      setSearchList(prev => [...prev, ...data.result]);
-      setHasNextPage(data.total - page.current * RECOMMEND_LIMIT_PER_PAGE > 0 ? true : false);
-      page.current += 1;
-    } catch (error) {
-      console.error(error);
-      alert('Something went wrong.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { isLoading, searchList, page, hasNextPage, inputText } = useRecommendValue();
+  const { getSearchTodoList } = useRecommendActions();
 
   useEffect(() => {
     if (!target.current) return;
@@ -51,7 +27,7 @@ const SearchDropdown = ({ inputText }: SearchDropdownProps) => {
     return () => {
       io.disconnect();
     };
-  }, [getSearchTodoList, page]);
+  }, [page]);
 
   return (
     <div className="dropdown" ref={root}>
