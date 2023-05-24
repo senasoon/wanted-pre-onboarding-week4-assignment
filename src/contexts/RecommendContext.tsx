@@ -74,14 +74,11 @@ export default function RecommendProvider({ children }: { children: React.ReactN
   }, [debouncedInputText]);
 
   const actions = { getSearchTodoList, setPage, setInputText };
+  const value = { searchList, hasNextPage, isLoading, page, inputText };
 
   return (
     <RecommendActionsContext.Provider value={actions}>
-      <RecommendValueContext.Provider
-        value={{ searchList, hasNextPage, isLoading, page, inputText }}
-      >
-        {children}
-      </RecommendValueContext.Provider>
+      <RecommendValueContext.Provider value={value}>{children}</RecommendValueContext.Provider>
     </RecommendActionsContext.Provider>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
 
@@ -29,7 +29,7 @@ const SearchDropdown = () => {
     };
   }, [page]);
 
-  return (
+  return searchList.length > 0 ? (
     <div className="dropdown" ref={root}>
       <div className="dropdown-inner">
         <ul className="search-list">
@@ -49,6 +49,8 @@ const SearchDropdown = () => {
         </ul>
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
 

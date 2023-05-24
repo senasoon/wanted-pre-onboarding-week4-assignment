@@ -1,39 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaSpinner, FaTrash } from 'react-icons/fa';
-import { useCallback, useState } from 'react';
-
-import { deleteTodo } from '../../api/todo';
-import { Todo, SetTodos } from '../../types/todo';
+import { useTodoActions } from '../../contexts/TodoContext';
 
 interface TodoItemProps {
   id: string;
   title: string;
-  setTodos: SetTodos;
 }
 
-const TodoItem = ({ id, title, setTodos }: TodoItemProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+const TodoItem = ({ id, title }: TodoItemProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleRemoveTodo = useCallback(async () => {
+  const { handleRemove } = useTodoActions();
+
+  const handleRemoveTodo = async () => {
     try {
       setIsLoading(true);
-      await deleteTodo(id);
-
-      setTodos(prev => prev.filter(item => item.id !== id));
-    } catch (error) {
-      console.error(error);
-      alert('Something went wrong.');
+      await handleRemove(id);
     } finally {
       setIsLoading(false);
     }
-  }, [id, setTodos]);
+  };
 
   return (
     <li className="item">
       <span className="ellipsis">{title}</span>
       <div className="item-option">
         {!isLoading ? (
-          <button onClick={() => handleRemoveTodo()}>
+          <button onClick={handleRemoveTodo}>
             <FaTrash className="btn-trash" />
           </button>
         ) : (
